@@ -8,9 +8,11 @@
             />
         </my-dialog>
         <post-list 
+            v-if="!isLoading"
             :posts="posts"
             @remove="removePost"
         />
+        <div v-else><h3>Загрузка...</h3></div>
     </div>
 </template>
 
@@ -45,13 +47,14 @@ export default {
             this.dialogVisible = true
         },
         async fetchPosts() {
+            this.isLoading = true
             try {
-                setTimeout(async () => {
-                    const response = await axios.get(`https://jsonplaceholder.typicode.com/posts?_limit=10&_page=${Math.floor(Math.random() * 10)}`)
-                    this.posts = response.data
-                }, 1000);
+                const response = await axios.get(`https://jsonplaceholder.typicode.com/posts?_limit=10&_page=${Math.floor(Math.random() * 10)}`)
+                this.posts = response.data
             } catch (error) {
                 console.log(error);
+            } finally {
+                this.isLoading = false
             }
         }
     },
