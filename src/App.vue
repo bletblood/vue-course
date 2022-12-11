@@ -1,19 +1,28 @@
 <template>
-    <div class="wrapper">
+  <div class="wrapper">
+    <div class="wrapper-btns">
+
+      <div class="btn-group">
         <my-button @click="showDialog">Создать пост</my-button>
         <my-button @click="fetchPosts">Обновить список</my-button>
-        <my-dialog v-model:show="dialogVisible">
-            <post-form 
-                @create="createPost"
-            />
-        </my-dialog>
-        <post-list 
-            v-if="!isLoading"
-            :posts="posts"
-            @remove="removePost"
-        />
-        <div v-else><h3>Загрузка...</h3></div>
+      </div>
+
+      <my-select v-model="selectedSort" :options="sortOptions" />
     </div>
+
+    <my-dialog v-model:show="dialogVisible">
+      <post-form 
+          @create="createPost"
+      />
+    </my-dialog>
+
+    <post-list 
+      v-if="!isLoading"
+      :posts="posts"
+      @remove="removePost"
+    />
+    <div v-else><h3>Загрузка...</h3></div>
+  </div>
 </template>
 
 <script>
@@ -32,6 +41,13 @@ export default {
             posts: [],
             dialogVisible: false,
             isLoading: false,
+            selectedSort: '',
+            sortOptions: [
+              {value: 'title', name: 'По название'},
+              {value: 'body', name: 'По описанию'},
+              {value: 'id', name: 'По идентификатору'},
+            ]
+
         }
     },
 
@@ -73,5 +89,10 @@ export default {
     
     .wrapper {
         padding: .75rem;
+    }
+
+    .wrapper-btns {
+      display: flex;
+      justify-content: space-between;
     }
 </style>
