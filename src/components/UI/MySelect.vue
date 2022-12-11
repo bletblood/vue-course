@@ -1,10 +1,11 @@
 <template>
-  <select @change="changeOption">
-    <option disabled value="">Выберите из списка</option>
+  <select :select="modelValue" @change="changeOption">
     <option
       v-for="option in options"
       :key="option.value"
       :value="option.value"
+      :disabled="option?.disabled"
+      :selected="modelValue === option.value"
     >
       {{ option.name }}
     </option>
@@ -32,5 +33,10 @@ export default {
 </script>
 
 <style scoped>
+  select {
+    padding: .45rem;
+    margin: 0 .5rem;
 
+    border: 1px solid teal;
+  }
 </style>
