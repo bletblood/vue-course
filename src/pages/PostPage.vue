@@ -27,9 +27,9 @@
     />
     <div v-else><h3>Загрузка...</h3></div>
     <div class="wrapper-observer">
-      <div ref="observer" class="observer">Показать еще</div>
+      <div v-intersection="loadMorePosts" class="observer">Показать еще</div>
     </div>
-    <div class="wrapper-pagination" :class="{'hidden': this.$refs.observer}">
+    <!-- <div class="wrapper-pagination" :class="{'hidden': this.$refs.observer}">
       <div  
         v-for="pageNumber in totalPages" 
         :key="pageNumber"
@@ -41,7 +41,7 @@
       >
         {{ pageNumber }}
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -125,20 +125,6 @@ export default {
     },
     mounted() {
         this.fetchPosts()
-
-        const options = {
-          rootMargin: '0px',
-          threshold: 1.0
-        }
-
-        const callback = (entries, observer) => {
-          if(entries[0].isIntersecting && this.page < this.totalPages) {
-            this.loadMorePosts()
-          }
-        }
-
-        const observer = new IntersectionObserver(callback, options);
-        observer.observe(this.$refs.observer)
     },
     computed: {
       sortedPosts() {
@@ -152,24 +138,23 @@ export default {
       }
     },
     watch: {
-      page() {
-        if(!this.$refs.observer) return this.fetchPosts()
-      }
+      // page() {
+      //   if(!this.$refs.observer) return this.fetchPosts()
+      // }
     }
 }
 </script>
 
-<style scoped>  
-    .wrapper {
-        padding: .75rem;
-    }
+<style lang="scss" scoped>  
+  .wrapper {
+    padding: .75rem;
 
-    .wrapper-btns {
+    &-btns {
       display: flex;
       justify-content: space-between;
     }
 
-    .wrapper-pagination {
+    &-pagination {
       display: flex;
       flex-direction: row;
     }
@@ -200,21 +185,23 @@ export default {
       visibility: hidden;
       display: flex;
       justify-content: center;
-    }
-    .observer {
-      width: 128px;
 
-      padding: .5rem;
-      margin: .5rem;
-
-      border: 2px solid teal;
-      text-align: center;
-
-      font-weight: bold;
-      font-size: normal;
+      .observer {
+        width: 128px;
+  
+        padding: .5rem;
+        margin: .5rem;
+  
+        border: 2px solid teal;
+        text-align: center;
+  
+        font-weight: bold;
+        font-size: normal;
+      }
     }
 
     .hidden {
       display: none;
     }
+  }
 </style>

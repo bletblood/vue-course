@@ -3,6 +3,7 @@
     <div @click="$router.push('/')" style="margin: 0 .5rem">Vue 3</div>
     <div class="btn-group">
       <my-button @click="$router.push('/posts')">Посты</my-button>
+      <my-button @click="$router.push('/composition')">Composition</my-button>
     </div>
   </div>
 </template>
